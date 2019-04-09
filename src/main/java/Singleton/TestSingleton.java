@@ -24,17 +24,14 @@ public class TestSingleton {
         lock.setLock(true);
         ExecutorService executorService = Executors.newCachedThreadPool();
         for (int i = 0; i < 100; i++) {
-            executorService.execute(new Runnable() {
-                @Override
-                public void run() {
-                    while (true){
-                        if(!lock.isLock()){
-                            Singleton singleton = Singleton.getInstance();
-                            instanceSet.add(singleton.toString());
-                            System.out.println(singleton.toString());
+            executorService.execute(() -> {
+                while (true){
+                    if(!lock.isLock()){
+                        Singleton singleton = Singleton.getInstance();
+                        instanceSet.add(singleton.toString());
+                        System.out.println(singleton.toString());
 
-                            break;
-                        }
+                        break;
                     }
                 }
             });

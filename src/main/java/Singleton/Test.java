@@ -17,21 +17,18 @@ public class Test {
         final CyclicBarrier condition = new CyclicBarrier(100);
         Set<String> set= Collections.synchronizedSet(new HashSet<String>());
         for (int i =0; i < 100; i++){
-            executorService.submit(new Runnable() {
-                @Override
-                public void run() {
+            executorService.submit(() -> {
 
-                    try {
-                        condition.await();
-                        UnsafeSingleton unsafeSingleton = UnsafeSingleton.getUnsafeSingleton();
-                        set.add(unsafeSingleton.toString());
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (BrokenBarrierException e) {
-                        e.printStackTrace();
-                    }
-
+                try {
+                    condition.await();
+                    UnsafeSingleton unsafeSingleton = UnsafeSingleton.getUnsafeSingleton();
+                    set.add(unsafeSingleton.toString());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (BrokenBarrierException e) {
+                    e.printStackTrace();
                 }
+
             });
 
 
